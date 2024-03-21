@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.login_input_container {
+  @apply bg-white border-2 rounded-md px-2 py-1 flex flex-row items-center gap-2;
+}
+
+.sign_up_input {
+  @apply bg-white border-2 rounded-md px-2 py-1 items-center gap-2;
+}
+
+input {
+  outline: none;
+  background-color: transparent;
+}
+
+.input_with_label {
+  @apply flex flex-col;
+}
+
+.input_label {
+  @apply text-black text-base font-semibold;
+}
+
+.btnStyle {
+  @apply px-3 py-2 text-white text-lg font-bold flex items-center justify-center rounded-lg bg-primary;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.max_width {
+  @apply max-w-[1440px] mx-auto;
+}
+
+.regiter_form_container {
+  @apply flex flex-row shadow-lg bg-white rounded-md max-w-[450px] w-full justify-center items-center max-h-[500px] h-full p-16;
+}
