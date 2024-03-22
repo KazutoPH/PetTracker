@@ -6,7 +6,30 @@ html,
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+}
+
+body {
+  @apply bg-slate-100;
+}
+
+.custom_margin {
+  @apply mt-[120px];
+}
+
+.padding-container {
+  @apply px-20 py-10;
+}
+
+.pet_img_container {
+  @apply h-[120px] w-[120px] rounded-full relative overflow-hidden;
+}
+
+.pet_detail_title {
+  @apply text-lg font-medium text-black/80 leading-none;
+}
+
+.pet_detail {
+  @apply text-xl text-black font-bold leading-none;
 }
 
 .login_input_container {
