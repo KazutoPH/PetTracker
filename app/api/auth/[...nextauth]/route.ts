@@ -1,6 +1,7 @@
-import { createUser, userExist } from "@/lib/actions/user.action";
+import { createUser, getUser } from "@/lib/actions/user.action";
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
+var generator = require("generate-password");
 
 const authOptions = {
   providers: [
@@ -12,16 +13,25 @@ const authOptions = {
 
   callbacks: {
     async signIn({ user }: any) {
-      const checkuser = await userExist(user.email);
+      const checkuser = await getUser(user.email);
 
       if (!checkuser) {
+        var password = await generator.generate({
+          length: 10,
+          uppercase: true,
+          numbers: true,
+          strict: true,
+        });
+
         const userinfo = {
-          name: user.name,
+          fullname: user.name,
           email: user.email,
-          password: "",
+          password: password.toString(),
         };
-        await createUser(user.email);
+
+        await createUser({ userinfo });
       }
+
       return true;
     },
   },

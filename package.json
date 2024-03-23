@@ -9,17 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@uploadthing/react": "^6.4.0",
     "bcrypt": "^5.1.1",
+    "file-saver": "^2.0.5",
+    "generate-password": "^1.7.1",
     "mongoose": "^8.2.2",
     "next": "14.1.3",
     "next-auth": "^4.24.7",
+    "qrcode": "^1.5.3",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^5.0.1"
+    "react-icons": "^5.0.1",
+    "uploadthing": "^6.6.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",

@@ -80,7 +80,7 @@ const Login = () => {
           <p className="text-black">or</p>
           <div className="w-full mt-2">
             <button
-              onClick={() => signIn("google", { callbackUrl: "/" })}
+              onClick={() => signIn("google", { callbackUrl: "/profile" })}
               className="btnStyle w-full"
               type="submit"
             >

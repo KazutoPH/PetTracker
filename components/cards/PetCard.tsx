@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
+import { saveAs } from "file-saver";
 
 const PetCard = () => {
   return (
@@ -47,7 +50,17 @@ const PetCard = () => {
       </div>
 
       <div className="w-full">
-        <button className="btnStyle">Download QR</button>
+        <button
+          className="btnStyle"
+          onClick={() => {
+            saveAs(
+              "https://utfs.io/f/758048cb-d7de-450a-a2f1-25a6d5b23390-1wk3e.png",
+              "qr.jpg"
+            );
+          }}
+        >
+          Download QR
+        </button>
       </div>
 
       <div className=" absolute  bottom-5 right-5 h-[100px] w-[100px]">

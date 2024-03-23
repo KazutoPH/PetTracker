@@ -52,7 +52,7 @@ const Register = () => {
               </div>
 
               <div className="input_with_label">
-                <p className="input_label">password</p>
+                <p className="input_label">Password</p>
                 <input
                   required
                   name="password"
