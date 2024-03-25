@@ -56,6 +56,8 @@ const Addpet = ({ id }: { id: string }) => {
 
     const res = await createPet({ petDetails });
     setisLoading(false);
+
+    router.push("/profile");
   };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {

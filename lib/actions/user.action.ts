@@ -6,6 +6,7 @@ import bcrypt, { hash } from "bcrypt";
 import { NextResponse } from "next/server";
 import Pet from "../models/pet.model";
 import QRCode from "qrcode";
+import { revalidatePath } from "next/cache";
 
 export async function getUser(email: string) {
   connectToDB();
@@ -139,10 +140,19 @@ export async function createPet({
       const updatePet = await Pet.findByIdAndUpdate(pet._id, {
         qr: qr,
       });
-
-      console.log(updatePet);
     }
+    revalidatePath("/profile");
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function getPets(id: string) {
+  connectToDB();
+  try {
+    const pets = await Pet.find({ owner: id });
+    return JSON.parse(JSON.stringify(pets));
+  } catch (error) {
+    return error;
   }
 }

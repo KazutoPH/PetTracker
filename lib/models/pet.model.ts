@@ -10,6 +10,7 @@ const petSchema = new mongoose.Schema(
     breed: { type: String, required: true },
     gender: { type: String, required: true },
     date_of_birth: { type: Date, required: true },
+    color: String,
     image: String,
     qr: String,
   },
