@@ -1,14 +1,23 @@
 "use client";
 
-import { createUser, updateUserInfo } from "@/lib/actions/user.action";
+import { updateUserInfo } from "@/lib/actions/user.action";
 import { UserType } from "@/types";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 import { useUploadThing } from "@/lib/uploadthing";
 import LoadingSpiner from "../LoadingSpiner";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FaX } from "react-icons/fa6";
 
-const Onboarding = ({ user }: { user: UserType }) => {
+const Onboarding = ({
+  user,
+  title,
+  closeBtn,
+}: {
+  user: UserType;
+  title: string;
+  closeBtn: boolean;
+}) => {
   const { fullname, image, email } = user;
   const [errorText, seterrorText] = useState<any>();
   const ref = useRef<HTMLInputElement>(null);
@@ -17,6 +26,10 @@ const Onboarding = ({ user }: { user: UserType }) => {
   const { startUpload } = useUploadThing("media");
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
+  const pathname = usePathname();
+  const { replace } = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     let uploadURL: string = "";
@@ -43,7 +56,10 @@ const Onboarding = ({ user }: { user: UserType }) => {
     const res = await updateUserInfo({ userinfo });
     setisLoading(false);
 
-    if (res.sucess) router.push("/profile");
+    if (res.sucess) {
+      router.push("/profile");
+      router.refresh();
+    }
   };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,16 +95,29 @@ const Onboarding = ({ user }: { user: UserType }) => {
     }
   };
 
+  function removeParams() {
+    params.delete("editProfile");
+    replace(`${pathname}`, { scroll: false });
+  }
+
   return (
-    <div className="regiter_form_container">
+    <div className="regiter_form_container relative">
+      {closeBtn && (
+        <FaX
+          className="absolute top-5 right-5 hover:cursor-pointer"
+          size={30}
+          onClick={() => removeParams()}
+        />
+      )}
+
       <div className=" w-full">
         <div className="flex flex-col items-center justify-center my-5 w-full">
-          <h1 className="text-3xl font-bold text-black">Create Profile</h1>
+          <h1 className="text-3xl font-bold text-black">{title}</h1>
 
           <form onSubmit={(e) => handleSubmit(e)} className="mt-5 w-full">
             <div className="flex flex-col gap-3 w-full">
               <div className="flex flex-col gap-2">
-                <div className="relative h-[100px] w-[100px] self-center border border-[#d3d3d3] rounded-full overflow-hidden">
+                <div className="relative h-[120px] w-[120px] self-center border border-[#d3d3d3] rounded-full overflow-hidden">
                   {showImage ? (
                     <Image
                       src={showImage}
@@ -157,6 +186,7 @@ const Onboarding = ({ user }: { user: UserType }) => {
                   minLength={8}
                   name="contact"
                   type="number"
+                  defaultValue={user.contact ? user.contact : ""}
                   className="sign_up_input"
                   placeholder="Contact"
                 />
@@ -170,6 +200,7 @@ const Onboarding = ({ user }: { user: UserType }) => {
                   name="address"
                   type="text"
                   className="sign_up_input"
+                  defaultValue={user.address ? user.address : ""}
                   placeholder="Address"
                 />
               </div>

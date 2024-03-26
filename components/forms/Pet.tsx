@@ -8,7 +8,7 @@ import { useUploadThing } from "@/lib/uploadthing";
 import LoadingSpiner from "../LoadingSpiner";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const Addpet = ({ id }: { id: string }) => {
+const PetForm = ({ id }: { id: string }) => {
   const [errorText, seterrorText] = useState<any>();
   const ref = useRef<HTMLInputElement>(null);
   const [showImage, setShowImage] = useState("");
@@ -243,4 +243,4 @@ const Addpet = ({ id }: { id: string }) => {
   );
 };
 
-export default Addpet;
+export default PetForm;

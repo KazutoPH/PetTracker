@@ -90,6 +90,7 @@ export async function updateUserInfo({
     await User.findOneAndUpdate(
       { email: userinfo.email },
       {
+        fullname: userinfo.fullname,
         image: userinfo.image,
         contact: userinfo.contact,
         address: userinfo.address,

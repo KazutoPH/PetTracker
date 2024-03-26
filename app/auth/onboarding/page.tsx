@@ -21,8 +21,8 @@ async function page() {
   } else redirect("auth/sign-in");
 
   return (
-    <main className="flex flex-1 justify-center items-center h-screen">
-      <Onboarding user={user} />
+    <main className="flex flex-1 justify-center items-center h-screen padding-container">
+      <Onboarding user={user} title={"Create Profile"} closeBtn={false} />
     </main>
   );
 }

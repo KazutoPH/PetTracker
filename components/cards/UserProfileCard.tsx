@@ -1,15 +1,26 @@
+"use server";
+
 import { getUser } from "@/lib/actions/user.action";
 import { UserType } from "@/types";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import React from "react";
 import { IoIosPerson } from "react-icons/io";
+import { FaPenToSquare } from "react-icons/fa6";
+import RouteButton from "../button/RouteButton";
 
 const UserProfileCard = async ({ user }: { user: UserType }) => {
   return (
-    <div className=" flex flex-col custom_margin bg-white padding-container rounded-md shadow-lg">
-      <div className="flex flex-row gap-5 items-center">
-        <div className="relative h-[100px] w-[100px] rounded-full border-2 border-primary flex overflow-hidden">
+    <div className=" flex flex-col custom_margin bg-white p-10 rounded-md shadow-lg relative">
+      <div className="absolute top-5 right-5">
+        <RouteButton
+          route={"editProfile=true"}
+          icon={<FaPenToSquare size={30} color="#c46316" />}
+        />
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-5 items-center">
+        <div className="relative h-[120px] w-[120px] rounded-full border-2 border-primary flex overflow-hidden">
           {user.image === "" ? (
             <div>
               <IoIosPerson
@@ -28,7 +39,7 @@ const UserProfileCard = async ({ user }: { user: UserType }) => {
           )}
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center sm:items-start text-center sm:text-start">
           <p className=" text-2xl font-bold leading-none">{user.fullname}</p>
           <p className=" text-base text-black/60 font-medium">{user.email}</p>
           <p className=" text-base text-black/60 font-medium">{user.contact}</p>

@@ -5,8 +5,10 @@ import React from "react";
 import { saveAs } from "file-saver";
 import { PetType } from "@/types";
 import moment from "moment";
+import RouteButton from "../button/RouteButton";
+import { FaPenToSquare } from "react-icons/fa6";
 
-const PetCard = ({ pet }: { pet: PetType }) => {
+const PetCard = ({ pet, edit }: { pet: PetType; edit: boolean }) => {
   const startDateObj = new Date(pet.date_of_birth);
   const endDateObj = new Date();
   const yearDiff = endDateObj.getFullYear() - startDateObj.getFullYear();
@@ -14,10 +16,16 @@ const PetCard = ({ pet }: { pet: PetType }) => {
 
   return (
     <div className="flex flex-col bg-white p-5 rounded-md w-full shadow-md gap-5 relative">
+      <div className="absolute top-5 right-5">
+        <RouteButton
+          route={"editPet=true"}
+          icon={<FaPenToSquare size={30} color="#c46316" />}
+        />
+      </div>
       <p className=" flex self-center clas text-2xl font-bold">
         Pet Identification
       </p>
-      <div className="flex flex-row gap-5">
+      <div className="flex flex-col md:flex-row gap-5">
         <div className="flex flex-col items-center max-h-fit">
           <div className="pet_img_container">
             <Image
@@ -32,8 +40,8 @@ const PetCard = ({ pet }: { pet: PetType }) => {
           <p className=" text-xl font-bold">{pet.name}</p>
         </div>
 
-        <div className="flex flex-row gap-5 w-full">
-          <div className="flex flex-col gap-3 flex-1">
+        <div className="flex flex-row gap-5 justify-around w-full">
+          <div className="flex flex-col gap-3 sm:flex-1">
             <div className="flex flex-col">
               <p className="pet_detail_title">Breed</p>
               <p className="pet_detail">{pet.breed}</p>
@@ -49,7 +57,7 @@ const PetCard = ({ pet }: { pet: PetType }) => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 flex-1">
+          <div className="flex flex-col gap-3 sm:flex-1">
             <div className="flex flex-col">
               <p className="pet_detail_title">Date of Birth</p>
               <p className="pet_detail">
@@ -92,7 +100,7 @@ const PetCard = ({ pet }: { pet: PetType }) => {
         </button>
       </div>
 
-      <div className=" absolute  bottom-5 right-5 h-[100px] w-[100px]">
+      <div className=" absolute  bottom-3 right-5 h-[100px] w-[100px]">
         <Image src={pet.qr} alt="qr" fill className="object-contain" />
       </div>
     </div>
