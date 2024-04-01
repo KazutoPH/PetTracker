@@ -39,8 +39,9 @@ export async function createUser({
         email: userinfo.email,
         password: hashpassword,
       });
+
       console.log(create_user);
-      return "sucess";
+      return JSON.parse(JSON.stringify(create_user));
     } else return "user exist";
   } catch (error) {
     throw error;
@@ -66,11 +67,11 @@ export async function logInUser({
         get_user.password
       );
       if (correctpassword) {
-        redirect("/");
-      } else return "wrong email or password";
-    } else return "wrong email or password";
+        return get_user;
+      } else return null;
+    } else return null;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 }
 
