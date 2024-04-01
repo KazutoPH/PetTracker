@@ -1,14 +1,29 @@
 "use client";
 
 import { createPet } from "@/lib/actions/user.action";
-import { UserType } from "@/types";
+import { PetType, UserType } from "@/types";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { useUploadThing } from "@/lib/uploadthing";
 import LoadingSpiner from "../LoadingSpiner";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FaX } from "react-icons/fa6";
 
-const PetForm = ({ id }: { id: string }) => {
+const PetForm = ({
+  petinfo,
+  id,
+  title,
+  closeBtn,
+  btnTitle,
+  route,
+}: {
+  petinfo?: PetType;
+  id: string;
+  title: string;
+  closeBtn: boolean;
+  btnTitle: string;
+  route: string;
+}) => {
   const [errorText, seterrorText] = useState<any>();
   const ref = useRef<HTMLInputElement>(null);
   const [showImage, setShowImage] = useState("");
@@ -20,10 +35,19 @@ const PetForm = ({ id }: { id: string }) => {
   const [showForm, setshowForm] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const addPetParams = searchParams.get("addPet");
+  const addPetParams = searchParams.get(route);
+  const params = new URLSearchParams(searchParams);
+  const pathname = usePathname();
+  const { replace } = useRouter();
 
   useEffect(() => {
-    if (addPetParams) setshowForm(true);
+    if (addPetParams && petinfo) {
+      if (petinfo._id === addPetParams) {
+        setGender(petinfo.gender);
+        setshowForm(true);
+        setShowImage(petinfo.image);
+      }
+    } else if (addPetParams) setshowForm(true);
     else setshowForm(false);
   }, [addPetParams]);
 
@@ -92,16 +116,26 @@ const PetForm = ({ id }: { id: string }) => {
     }
   };
 
+  function removeParams() {
+    params.delete(route);
+    replace(`${pathname}`, { scroll: false });
+  }
+
   return (
     <>
       {showForm && (
         <div className="darkbg">
-          <div className="regiter_form_container">
+          <div className="regiter_form_container relative">
+            {closeBtn && (
+              <FaX
+                className="absolute top-5 right-5 hover:cursor-pointer"
+                size={30}
+                onClick={() => removeParams()}
+              />
+            )}
             <div className=" w-full">
               <div className="flex flex-col items-center justify-center my-5 w-full">
-                <h1 className="text-3xl font-bold text-black">
-                  Create Profile
-                </h1>
+                <h1 className="text-3xl font-bold text-black">{title}</h1>
 
                 <form onSubmit={(e) => handleSubmit(e)} className="mt-5 w-full">
                   <div className="flex flex-col gap-3 w-full">
@@ -153,6 +187,7 @@ const PetForm = ({ id }: { id: string }) => {
                         type="text"
                         className="sign_up_input"
                         placeholder="Name"
+                        defaultValue={petinfo ? petinfo.name : ""}
                       />
                     </div>
 
@@ -163,6 +198,7 @@ const PetForm = ({ id }: { id: string }) => {
                         name="breed"
                         className="sign_up_input"
                         placeholder="Breed"
+                        defaultValue={petinfo ? petinfo.breed : ""}
                       />
                     </div>
 
@@ -174,7 +210,7 @@ const PetForm = ({ id }: { id: string }) => {
                           name="date_of_birth"
                           type="date"
                           className="sign_up_input"
-                          placeholder="Contact"
+                          placeholder="date_of_birth"
                         />
                       </div>
 
@@ -216,6 +252,7 @@ const PetForm = ({ id }: { id: string }) => {
                         type="text"
                         className="sign_up_input"
                         placeholder="Color"
+                        defaultValue={petinfo ? petinfo.color : ""}
                       />
                     </div>
                   </div>
@@ -229,8 +266,14 @@ const PetForm = ({ id }: { id: string }) => {
                   )}
 
                   <div className="w-full mt-5">
-                    <button className="btnStyle w-full" type="submit">
-                      Add Pet
+                    <button
+                      disabled={isLoading}
+                      className={`btnStyle w-full ${
+                        isLoading && "!bg-primary/50"
+                      }`}
+                      type="submit"
+                    >
+                      {isLoading ? <LoadingSpiner size={28} /> : btnTitle}
                     </button>
                   </div>
                 </form>

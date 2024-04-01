@@ -1,13 +1,19 @@
 "use client";
 
 import { createUser } from "@/lib/actions/user.action";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import LoadingSpiner from "../LoadingSpiner";
 
 const Register = () => {
   const [errorText, seterrorText] = useState<any>();
+  const [isLoading, setisLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setisLoading(true);
     const formData = new FormData(e.currentTarget);
     const userinfo = {
       fullname: formData.get("fullname")?.toString() || "",
@@ -18,7 +24,25 @@ const Register = () => {
     const res = await createUser({ userinfo });
     if (res === "user exist") {
       seterrorText("user email already exist");
-    } else seterrorText(null);
+      setisLoading(false);
+    } else {
+      const id = res._id;
+      const email = res.email;
+      const fullname = res.fullname;
+      seterrorText(null);
+      const signInRes = await signIn("register-credentials", {
+        id,
+        email,
+        fullname,
+        redirect: false,
+      });
+
+      if (signInRes?.error) {
+        seterrorText("there was an error signing in try again");
+        setisLoading(false);
+      } else router.push("/auth/onboarding");
+      setisLoading(false);
+    }
   };
 
   return (
@@ -71,8 +95,12 @@ const Register = () => {
             )}
 
             <div className="w-full mt-5">
-              <button className="btnStyle w-full" type="submit">
-                Register Account
+              <button
+                disabled={isLoading}
+                className={`btnStyle w-full ${isLoading && "!bg-primary/50"}`}
+                type="submit"
+              >
+                {isLoading ? <LoadingSpiner size={28} /> : "Register Account"}
               </button>
             </div>
           </form>
