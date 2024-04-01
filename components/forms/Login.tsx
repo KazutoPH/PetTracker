@@ -3,29 +3,36 @@
 import { logInUser } from "@/lib/actions/user.action";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaEnvelope } from "react-icons/fa6";
 import { FaLock } from "react-icons/fa6";
+import LoadingSpiner from "../LoadingSpiner";
 
 const Login = () => {
   const [errorText, seterrorText] = useState<any>();
+  const [isLoading, setisLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setisLoading(true);
     const formData = new FormData(e.currentTarget);
-    const userinfo = {
-      email: formData.get("email")?.toString() || "",
-      password: formData.get("password")?.toString() || "",
-    };
 
-    const res = await logInUser({ userinfo });
+    const email = formData.get("email")?.toString() || "";
+    const password = formData.get("password")?.toString() || "";
 
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (res?.error) {
+      seterrorText("Wrong Email or Password");
+      setisLoading(false);
+    } else router.push("/profile");
     console.log(res);
-    if (res) {
-      seterrorText(res);
-    } else {
-      seterrorText(null);
-    }
   };
 
   return (
@@ -42,7 +49,7 @@ const Login = () => {
                 <input
                   name="email"
                   required
-                  className="login_input"
+                  className="login_input w-full"
                   type="text"
                   placeholder="email"
                 />
@@ -53,7 +60,7 @@ const Login = () => {
                 <input
                   name="password"
                   required
-                  className="login_input"
+                  className="login_input w-full"
                   type="password"
                   placeholder="password"
                 />
@@ -65,8 +72,12 @@ const Login = () => {
                 </div>
               )}
 
-              <button className="btnStyle" type="submit">
-                Sign-In
+              <button
+                disabled={isLoading}
+                className={`btnStyle ${isLoading && "!bg-primary/50"}`}
+                type="submit"
+              >
+                {isLoading ? <LoadingSpiner size={28} /> : "Sign-In"}
               </button>
             </div>
           </form>
