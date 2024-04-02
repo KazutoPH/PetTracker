@@ -5,7 +5,7 @@ export interface UserType {
   contact: number;
   address: number;
   onboarding: boolean;
-  image: String;
+  image: string;
 }
 
 export interface PetType {

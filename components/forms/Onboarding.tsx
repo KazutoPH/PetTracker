@@ -1,6 +1,6 @@
 "use client";
 
-import { updateUserInfo } from "@/lib/actions/user.action";
+import { deleteImage, updateUserInfo } from "@/lib/actions/user.action";
 import { UserType } from "@/types";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
@@ -13,15 +13,17 @@ const Onboarding = ({
   user,
   title,
   closeBtn,
+  edit,
 }: {
   user: UserType;
   title: string;
   closeBtn: boolean;
+  edit?: boolean;
 }) => {
   const { fullname, image, email } = user;
   const [errorText, seterrorText] = useState<any>();
   const ref = useRef<HTMLInputElement>(null);
-  const [showImage, setShowImage] = useState("");
+  const [showImage, setShowImage] = useState(user ? user.image : "");
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
   const [isLoading, setisLoading] = useState(false);
@@ -30,6 +32,7 @@ const Onboarding = ({
   const params = new URLSearchParams(searchParams);
   const pathname = usePathname();
   const { replace } = useRouter();
+  const initialImage = user ? user.image : "";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     let uploadURL: string = "";
@@ -37,11 +40,16 @@ const Onboarding = ({
     setisLoading(true);
     const formData = new FormData(e.currentTarget);
 
-    if (showImage !== "") {
-      const imgRes = await startUpload(files);
-      if (imgRes && imgRes[0].url) {
-        uploadURL = imgRes[0].url;
-        console.log(uploadURL);
+    if (showImage !== initialImage && showImage !== "") {
+      if (files) {
+        const deleteImg = await deleteImage(initialImage);
+        const imgRes = await startUpload(files);
+        if (imgRes && imgRes[0].url) {
+          uploadURL = imgRes[0].url;
+          console.log(uploadURL);
+        }
+      } else {
+        uploadURL = initialImage;
       }
     }
 
@@ -139,7 +147,10 @@ const Onboarding = ({
                         if (ref.current) ref.current.click();
                       }
                     }}
-                    className="btnStyle w-full"
+                    disabled={isLoading}
+                    className={`btnStyle w-full ${
+                      isLoading && "!bg-primary/50"
+                    }`}
                   >
                     {`${showImage !== "" ? "Remove Image" : "Upload Image"}`}
                   </button>
@@ -214,14 +225,18 @@ const Onboarding = ({
 
             <div className="w-full mt-5">
               <button
-                className="btnStyle w-full"
                 disabled={isLoading}
+                className={`btnStyle w-full ${isLoading && "!bg-primary/50"}`}
                 type="submit"
               >
                 {isLoading ? <LoadingSpiner size={28} /> : "Save"}
               </button>
             </div>
           </form>
+
+          <button onClick={async () => await deleteImage(initialImage)}>
+            Delete Photo
+          </button>
         </div>
       </div>
     </div>

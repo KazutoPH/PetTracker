@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 import Pet from "../models/pet.model";
 import QRCode from "qrcode";
 import { revalidatePath } from "next/cache";
+import { UTApi } from "uploadthing/server";
 
 export async function getUser(email: string) {
   connectToDB();
@@ -157,4 +158,28 @@ export async function getPets(id: string) {
   } catch (error) {
     return error;
   }
+}
+
+export async function getPetInfo(id: string) {
+  connectToDB();
+  try {
+    const petInfo = await Pet.findOne({ id }).populate({
+      path: "owner",
+      model: User,
+      select: "fullname address email contact image",
+    });
+
+    return JSON.parse(JSON.stringify(petInfo));
+  } catch (error) {}
+}
+
+export async function deleteImage(img: string) {
+  const utapi = new UTApi();
+
+  const getImg = img.replace("https://utfs.io/f/", "");
+
+  console.log("deleting photo: ", getImg);
+
+  const res = await utapi.deleteFiles(getImg);
+  console.log(res);
 }

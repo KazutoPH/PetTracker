@@ -7,18 +7,16 @@ interface SectionContextProviderProps {
 }
 
 interface ContextProvider {
-  customButtonSelected: string;
-  setCustomButtonSelected: React.Dispatch<React.SetStateAction<string>>;
+  isLoggedIn: boolean;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const ContextProvider = createContext<ContextProvider | null>(null);
 
 function SectionContextProvider({ children }: SectionContextProviderProps) {
-  const [customButtonSelected, setCustomButtonSelected] = useState<string>("");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   return (
-    <ContextProvider.Provider
-      value={{ customButtonSelected, setCustomButtonSelected }}
-    >
+    <ContextProvider.Provider value={{ isLoggedIn, setIsLoggedIn }}>
       {children}
     </ContextProvider.Provider>
   );

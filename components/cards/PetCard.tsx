@@ -26,12 +26,14 @@ const PetCard = ({
 
   return (
     <>
-      <div className="flex flex-col bg-white p-5 rounded-md w-full shadow-md gap-5 relative">
+      <div className="flex flex-col bg-white p-5 lg:p-10 rounded-md w-full shadow-md gap-5 relative">
         <div className="absolute top-5 right-5">
-          <RouteButton
-            route={`editPet=${pet._id}`}
-            icon={<FaPenToSquare size={30} color="#c46316" />}
-          />
+          {edit && (
+            <RouteButton
+              route={`editPet=${pet._id}`}
+              icon={<FaPenToSquare size={30} color="#c46316" />}
+            />
+          )}
         </div>
         <p className=" flex self-center clas text-2xl font-bold">
           Pet Identification

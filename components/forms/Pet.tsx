@@ -140,7 +140,7 @@ const PetForm = ({
                 <form onSubmit={(e) => handleSubmit(e)} className="mt-5 w-full">
                   <div className="flex flex-col gap-3 w-full">
                     <div className="flex flex-col gap-2">
-                      <div className="relative h-[100px] w-[100px] self-center border border-[#d3d3d3] rounded-full overflow-hidden">
+                      <div className="relative h-[120px] w-[120px] self-center border border-[#d3d3d3] rounded-full overflow-hidden">
                         {showImage ? (
                           <Image
                             src={showImage}

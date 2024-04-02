@@ -23,8 +23,8 @@ async function Profile() {
   if (!user.onboarding) redirect(`/auth/onboarding`);
 
   return (
-    <div className=" max_width flex flex-col padding-container gap-5">
-      <UserProfileCard user={user} />
+    <div className=" max_width flex flex-col padding-container custom_margin gap-5">
+      <UserProfileCard user={user} edit={true} />
       <div className="w-full">
         <p className=" text-2xl font-bold py-2">My Pets</p>
         <PetList id={user._id} />

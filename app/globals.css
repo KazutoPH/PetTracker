@@ -9,7 +9,7 @@ body {
 }
 
 body {
-  @apply bg-slate-200;
+  @apply bg-primary/5;
 }
 
 .custom_margin {

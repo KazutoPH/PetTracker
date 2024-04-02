@@ -22,7 +22,12 @@ function EditProfile({ user }: { user: UserType }) {
     <>
       {showForm && (
         <div className="darkbg padding-container">
-          <Onboarding user={user} title={"Update Profile"} closeBtn={true} />
+          <Onboarding
+            user={user}
+            title={"Update Profile"}
+            closeBtn={true}
+            edit={true}
+          />
         </div>
       )}
     </>

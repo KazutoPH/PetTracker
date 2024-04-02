@@ -9,15 +9,30 @@ import { IoIosPerson } from "react-icons/io";
 import { FaPenToSquare } from "react-icons/fa6";
 import RouteButton from "../button/RouteButton";
 
-const UserProfileCard = async ({ user }: { user: UserType }) => {
+const UserProfileCard = async ({
+  user,
+  custom_style,
+  edit,
+  title,
+}: {
+  user: UserType;
+  custom_style?: string;
+  edit: boolean;
+  title?: boolean;
+}) => {
   return (
-    <div className=" flex flex-col custom_margin bg-white p-10 rounded-md shadow-lg relative">
-      <div className="absolute top-5 right-5">
-        <RouteButton
-          route={"editProfile=true"}
-          icon={<FaPenToSquare size={30} color="#c46316" />}
-        />
-      </div>
+    <div
+      className={`flex flex-col bg-white p-5 lg:p-10 rounded-md shadow-lg relative ${custom_style}`}
+    >
+      <p className=" flex self-center clas text-2xl font-bold">Owner Details</p>
+      {edit && (
+        <div className="absolute top-5 right-5">
+          <RouteButton
+            route={"editProfile=true"}
+            icon={<FaPenToSquare size={30} color="#c46316" />}
+          />
+        </div>
+      )}
 
       <div className="flex flex-col sm:flex-row gap-5 items-center">
         <div className="relative h-[120px] w-[120px] rounded-full border-2 border-primary flex overflow-hidden">
