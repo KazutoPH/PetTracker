@@ -18,11 +18,13 @@ const PetCard = ({
   pet: PetType;
   edit: boolean;
 }) => {
-  const startDateObj = new Date(pet.date_of_birth);
-  const endDateObj = new Date();
-  const yearDiff = endDateObj.getFullYear() - startDateObj.getFullYear();
-  const monthDiff = endDateObj.getMonth() - startDateObj.getMonth();
   const [selectPet, setselectPet] = useState("");
+  var startDateObj = moment(pet.date_of_birth);
+  var endDateObj = moment(new Date());
+  var yearsdiff = endDateObj.diff(startDateObj, "year");
+  var monthsdiff = endDateObj.diff(startDateObj, "months");
+
+  // console.log(yearsdiff, monthsdiff, pet._id);
 
   return (
     <>
@@ -80,21 +82,27 @@ const PetCard = ({
               <div className="flex flex-col">
                 <p className="pet_detail_title">Age</p>
                 <p className="pet_detail">
-                  {yearDiff > 0 && (
+                  {yearsdiff > 0 ? (
                     <>
-                      {yearDiff === 1
-                        ? `${yearDiff} year`
-                        : `${yearDiff} years`}
-                    </>
-                  )}
-                  {monthDiff > 0 ? (
-                    <>
-                      {monthDiff === 1
-                        ? `${yearDiff} month`
-                        : `${monthDiff} months`}
+                      {yearsdiff === 1
+                        ? `${yearsdiff} year `
+                        : `${yearsdiff} years `}
                     </>
                   ) : (
-                    yearDiff === 0 && "1 month"
+                    <>
+                      {monthsdiff === 1
+                        ? `${monthsdiff} month`
+                        : `${monthsdiff} months`}
+                    </>
+                  )}
+                  {monthsdiff > 12 ? (
+                    <>
+                      {monthsdiff - 12 === 1
+                        ? `${monthsdiff - 12} month`
+                        : `${monthsdiff - 12} months`}
+                    </>
+                  ) : (
+                    monthsdiff === 0 && "1 month"
                   )}
                   &nbsp;old
                 </p>
@@ -123,10 +131,11 @@ const PetCard = ({
       <PetForm
         petinfo={pet}
         id={id}
-        title={"Add Pet"}
-        btnTitle={"Add Pet"}
+        title={"Edit Pet"}
+        btnTitle={"Save"}
         closeBtn={true}
         route={"editPet"}
+        edit={true}
       />
     </>
   );

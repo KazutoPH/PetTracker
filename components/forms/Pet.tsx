@@ -1,6 +1,10 @@
 "use client";
 
-import { createPet } from "@/lib/actions/user.action";
+import {
+  createPet,
+  deleteImage,
+  updatePetInfo,
+} from "@/lib/actions/user.action";
 import { PetType, UserType } from "@/types";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -16,6 +20,7 @@ const PetForm = ({
   closeBtn,
   btnTitle,
   route,
+  edit,
 }: {
   petinfo?: PetType;
   id: string;
@@ -23,6 +28,7 @@ const PetForm = ({
   closeBtn: boolean;
   btnTitle: string;
   route: string;
+  edit?: boolean;
 }) => {
   const [errorText, seterrorText] = useState<any>();
   const ref = useRef<HTMLInputElement>(null);
@@ -35,39 +41,63 @@ const PetForm = ({
   const [showForm, setshowForm] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const addPetParams = searchParams.get(route);
+  const petParams = searchParams.get(route);
   const params = new URLSearchParams(searchParams);
   const pathname = usePathname();
   const { replace } = useRouter();
+  const [hostname, setHostname] = useState("");
+  const initialImage = petinfo ? petinfo.image : "";
+
+  const formatDate = (date: any) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const formattedCurrentDate = petinfo
+    ? formatDate(new Date(petinfo.date_of_birth))
+    : "";
 
   useEffect(() => {
-    if (addPetParams && petinfo) {
-      if (petinfo._id === addPetParams) {
+    const currentHostname = window.location.hostname;
+    setHostname(currentHostname);
+
+    if (petParams && petinfo) {
+      if (petinfo._id === petParams) {
         setGender(petinfo.gender);
         setshowForm(true);
         setShowImage(petinfo.image);
       }
-    } else if (addPetParams) setshowForm(true);
+    } else if (petParams) setshowForm(true);
     else setshowForm(false);
-  }, [addPetParams]);
+  }, [petParams]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("submit click");
     let uploadURL: string = "";
     e.preventDefault();
     setisLoading(true);
 
     const formData = new FormData(e.currentTarget);
 
-    if (showImage !== "") {
-      const imgRes = await startUpload(files);
-      if (imgRes && imgRes[0].url) {
-        uploadURL = imgRes[0].url;
-        console.log(uploadURL);
-      }
+    if (showImage === "" && initialImage !== "") {
+      const deleteImg = await deleteImage(initialImage);
     }
 
-    console.log(files);
+    if (showImage !== initialImage && showImage !== "") {
+      if (files) {
+        const deleteImg = await deleteImage(initialImage);
+        const imgRes = await startUpload(files);
+        if (imgRes && imgRes[0].url) {
+          uploadURL = imgRes[0].url;
+        }
+      } else {
+        uploadURL = initialImage;
+      }
+    } else {
+      uploadURL = initialImage;
+    }
+
     const petDetails = {
       owner: id,
       name: formData.get("name")?.toString() || "",
@@ -78,10 +108,20 @@ const PetForm = ({
       image: uploadURL,
     };
 
-    const res = await createPet({ petDetails });
-    setisLoading(false);
+    if (!petinfo) {
+      const res = await createPet({ petDetails });
+      setisLoading(false);
 
-    router.push("/profile");
+      router.push("/profile");
+    } else {
+      const res = await updatePetInfo({
+        petDetails: petDetails,
+        petParams: petParams,
+      });
+      setisLoading(false);
+
+      router.push("/profile");
+    }
   };
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -211,6 +251,7 @@ const PetForm = ({
                           type="date"
                           className="sign_up_input"
                           placeholder="date_of_birth"
+                          defaultValue={formattedCurrentDate}
                         />
                       </div>
 

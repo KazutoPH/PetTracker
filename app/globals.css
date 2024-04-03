@@ -21,7 +21,7 @@ body {
 }
 
 .pet_img_container {
-  @apply h-[120px] w-[120px] rounded-full relative overflow-hidden;
+  @apply h-[120px] w-[120px] rounded-full relative overflow-hidden border border-[#d3d3d3];
 }
 
 .pet_detail_title {

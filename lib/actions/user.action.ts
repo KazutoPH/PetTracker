@@ -173,13 +173,43 @@ export async function getPetInfo(id: string) {
   } catch (error) {}
 }
 
+export async function updatePetInfo({
+  petDetails,
+  petParams,
+}: {
+  petDetails: {
+    owner: string;
+    name: string;
+    breed: string;
+    date_of_birth: FormDataEntryValue | null;
+    gender: string;
+    color: string | null;
+    image: string;
+  };
+  petParams: string | null;
+}) {
+  connectToDB();
+
+  try {
+    if (petParams) {
+      const petUpdate = await Pet.findByIdAndUpdate(petParams, {
+        name: petDetails.name,
+        breed: petDetails.breed,
+        date_of_birth: petDetails.date_of_birth,
+        gender: petDetails.gender,
+        color: petDetails.color,
+        image: petDetails.image,
+      });
+    }
+  } catch (error) {
+    console.log("error");
+  }
+}
+
 export async function deleteImage(img: string) {
   const utapi = new UTApi();
-
   const getImg = img.replace("https://utfs.io/f/", "");
-
   console.log("deleting photo: ", getImg);
-
   const res = await utapi.deleteFiles(getImg);
   console.log(res);
 }

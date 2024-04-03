@@ -35,7 +35,7 @@ const UserProfileCard = async ({
       )}
 
       <div className="flex flex-col sm:flex-row gap-5 items-center">
-        <div className="relative h-[120px] w-[120px] rounded-full border-2 border-primary flex overflow-hidden">
+        <div className="relative h-[120px] w-[120px] self-center border border-[#d3d3d3] rounded-full overflow-hidden">
           {user.image === "" ? (
             <div>
               <IoIosPerson

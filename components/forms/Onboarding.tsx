@@ -32,13 +32,17 @@ const Onboarding = ({
   const params = new URLSearchParams(searchParams);
   const pathname = usePathname();
   const { replace } = useRouter();
-  const initialImage = user ? user.image : "";
+  const initialImage = user.image ? user.image : "";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     let uploadURL: string = "";
     e.preventDefault();
     setisLoading(true);
     const formData = new FormData(e.currentTarget);
+
+    if (showImage === "" && initialImage !== "") {
+      const deleteImg = await deleteImage(initialImage);
+    }
 
     if (showImage !== initialImage && showImage !== "") {
       if (files) {
@@ -51,6 +55,8 @@ const Onboarding = ({
       } else {
         uploadURL = initialImage;
       }
+    } else {
+      uploadURL = initialImage;
     }
 
     const userinfo = {
@@ -168,6 +174,7 @@ const Onboarding = ({
               <div className="input_with_label w-full">
                 <p className="input_label">Full Name</p>
                 <input
+                  disabled={isLoading}
                   required
                   name="fullname"
                   type="text"
@@ -193,6 +200,7 @@ const Onboarding = ({
               <div className="input_with_label">
                 <p className="input_label">Contact No.</p>
                 <input
+                  disabled={isLoading}
                   required
                   minLength={8}
                   name="contact"
@@ -206,6 +214,7 @@ const Onboarding = ({
               <div className="input_with_label">
                 <p className="input_label">Address</p>
                 <input
+                  disabled={isLoading}
                   required
                   minLength={5}
                   name="address"
@@ -233,10 +242,6 @@ const Onboarding = ({
               </button>
             </div>
           </form>
-
-          <button onClick={async () => await deleteImage(initialImage)}>
-            Delete Photo
-          </button>
         </div>
       </div>
     </div>
