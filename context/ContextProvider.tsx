@@ -1,37 +1,40 @@
-// "use client";
+"use client";
 
-// import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext } from "react";
 
-// interface SectionContextProviderProps {
-//   children: React.ReactNode;
-// }
+interface SectionContextProviderProps {
+  children: React.ReactNode;
+}
 
-// interface ContextProvider {
-//   isLoggedIn: boolean;
-//   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-// }
-// export const ContextProvider = createContext<ContextProvider | null>(null);
+interface ContextProvider {
+  modal: string;
+  modalId: string;
+  setModal: React.Dispatch<React.SetStateAction<string>>;
+  setModalId: React.Dispatch<React.SetStateAction<string>>;
+}
+export const ContextProvider = createContext<ContextProvider | null>(null);
 
-// function SectionContextProvider({ children }: SectionContextProviderProps) {
-//   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+function SectionContextProvider({ children }: SectionContextProviderProps) {
+  const [modal, setModal] = useState<string>('');
+  const [modalId, setModalId] = useState<string>('')
 
-//   return (
-//     <ContextProvider.Provider value={{ isLoggedIn, setIsLoggedIn }}>
-//       {children}
-//     </ContextProvider.Provider>
-//   );
-// }
+  return (
+    <ContextProvider.Provider value={{ modal, setModal, modalId, setModalId }}>
+      {children}
+    </ContextProvider.Provider>
+  );
+}
 
-// export function useContextProvider() {
-//   const context = useContext(ContextProvider);
+export function useContextProvider() {
+  const context = useContext(ContextProvider);
 
-//   if (context === null) {
-//     throw new Error(
-//       "useActiveContext must be used within an ActiveSectionProvider"
-//     );
-//   }
+  if (context === null) {
+    throw new Error(
+      "useActiveContext must be used within an ActiveSectionProvider"
+    );
+  }
 
-//   return context;
-// }
+  return context;
+}
 
-// export default SectionContextProvider;
+export default SectionContextProvider;
