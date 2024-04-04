@@ -45,7 +45,7 @@ const NavbarContent = () => {
   }, []);
 
   return (
-    <main className="w-full absolute top-0">
+    <main className="w-full absolute top-0 z-20">
       <div className="max_width flex flex-row justify-between items-center py-5 px-[5%] md:px-20">
         <Link href="/">
           <div className="flex flex-row items-center gap-5">
@@ -132,7 +132,7 @@ const NavbarContent = () => {
               initial="initial"
               animate="animate"
               exit="exit"
-              className="z-10 lg:hidden bg-white fixed right-0 top-0 w-full h-full flex justify-end  overflow-hidden rounded-bl-full"
+              className="z-20 lg:hidden bg-white fixed right-0 top-0 w-full h-full flex justify-end  overflow-hidden rounded-bl-full"
             >
               <div className="flex flex-1 bg-primary/5 max-h-screen max-w-[100vw] justify-center items-center">
                 <motion.ul
