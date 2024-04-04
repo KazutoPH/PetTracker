@@ -120,7 +120,6 @@ export async function createPet({
     gender: string;
     color: string | null;
     image: string;
-    hostname: string;
   };
 }) {
   connectToDB();
@@ -140,7 +139,9 @@ export async function createPet({
       const updateUser = await User.findByIdAndUpdate(petDetails.owner, {
         $push: { pets: petDetails.owner },
       });
-      const qr = await QRCode.toDataURL(`${pet.hostname}/pet/${pet._id}`);
+      const qr = await QRCode.toDataURL(
+        `https://pet-tracker-git-main-raymart-gomezs-projects.vercel.app/pet/${pet._id}`
+      );
       const updatePet = await Pet.findByIdAndUpdate(pet._id, {
         qr: qr,
       });

@@ -60,8 +60,10 @@ const PetForm = ({
     : "";
 
   useEffect(() => {
-    const currentHostname = window.location.hostname;
+    const currentHostname = window.location.host;
     setHostname(currentHostname);
+
+    console.log(currentHostname);
 
     if (petParams && petinfo) {
       if (petinfo._id === petParams) {
