@@ -24,7 +24,7 @@ const Onboarding = ({
   const { fullname, image, email } = user;
   const [errorText, seterrorText] = useState<any>();
   const ref = useRef<HTMLInputElement>(null);
-  const [showImage, setShowImage] = useState(user ? user.image : "");
+  const [showImage, setShowImage] = useState(!user.image || user.image === '' ? '' : user.image);
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
   const [isLoading, setisLoading] = useState(false);
