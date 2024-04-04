@@ -60,10 +60,8 @@ const PetForm = ({
     : "";
 
   useEffect(() => {
-    const currentHostname = window.location.host;
+    const currentHostname = window.location.hostname;
     setHostname(currentHostname);
-
-    console.log(currentHostname);
 
     if (petParams && petinfo) {
       if (petinfo._id === petParams) {
@@ -108,7 +106,6 @@ const PetForm = ({
       gender: gender,
       color: formData.get("color")?.toString() || "",
       image: uploadURL,
-      hostname: hostname,
     };
 
     if (!petinfo) {
@@ -167,7 +164,7 @@ const PetForm = ({
   return (
     <>
       {showForm && (
-        <div className="darkbg">
+        <div className="darkbg padding-container">
           <div className="regiter_form_container relative">
             {closeBtn && (
               <FaX
