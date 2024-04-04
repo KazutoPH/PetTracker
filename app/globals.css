@@ -13,7 +13,7 @@ body {
 }
 
 .custom_margin {
-  @apply mt-[120px];
+  @apply mt-[70px];
 }
 
 .padding-container {

@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col">
-      <div className="flex flex-row w-full mt-10">
+      <div className="flex flex-row w-full lg:mt-20">
         <div className="w-full max_width items-center flex flex-col lg:flex-row padding-container custom_margin lg:gap-48 gap-16">
           <div className="flex flex-col flex-1">
             <p className=" text-7xl font-bold">
