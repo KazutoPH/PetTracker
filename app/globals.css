@@ -54,7 +54,11 @@ input {
 }
 
 .btnStyle {
-  @apply px-3 py-1 text-white text-lg font-bold flex items-center justify-center rounded-lg bg-primary;
+  @apply px-3 py-[5px] text-white text-lg font-bold flex items-center justify-center rounded-lg bg-primary;
+}
+
+.navBtnStyle {
+  @apply px-3 py-2 text-white text-lg font-bold flex items-center justify-center rounded-lg bg-primary;
 }
 
 input[type="number"]::-webkit-inner-spin-button,

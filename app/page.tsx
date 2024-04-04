@@ -1,15 +1,13 @@
 import Image from "next/image";
-import { getServerSession } from "next-auth";
 
 export default function Home() {
-  currentSession();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
-      <div className="flex flex-row w-full">
-        <div className="w-full max_width items-center flex flex-row padding-container custom_margin gap-48">
+    <main className="flex min-h-screen flex-col">
+      <div className="flex flex-row w-full mt-10">
+        <div className="w-full max_width items-center flex flex-col lg:flex-row padding-container custom_margin lg:gap-48 gap-16">
           <div className="flex flex-col flex-1">
             <p className=" text-7xl font-bold">
-              We're Here to Care for{" "}
+              {`We're Here to Care for `}
               <span className=" text-primary">your pets</span>
             </p>
 
@@ -20,7 +18,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-1">
+          <div className="flex flex-1 w-full items-center justify-center">
             <div className="relative h-full w-full max-h-[600px] max-w-[600px] aspect-square rounded-full overflow-hidden">
               <Image
                 src="/holdingpet.jpg"
@@ -34,9 +32,4 @@ export default function Home() {
       </div>
     </main>
   );
-}
-
-export async function currentSession() {
-  const session = await getServerSession();
-  console.log(session);
 }

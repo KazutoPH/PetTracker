@@ -22,7 +22,7 @@ const UserProfileCard = async ({
 }) => {
   return (
     <div
-      className={`flex flex-col bg-white p-5 lg:p-10 rounded-md shadow-lg relative ${custom_style}`}
+      className={`flex flex-col bg-white p-5 lg:p-10 rounded-md gap-5 shadow-lg relative ${custom_style}`}
     >
       <p className=" flex self-center clas text-2xl font-bold">Owner Details</p>
       {edit && (

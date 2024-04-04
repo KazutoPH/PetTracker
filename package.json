@@ -12,6 +12,7 @@
     "@uploadthing/react": "^6.4.0",
     "bcrypt": "^5.1.1",
     "file-saver": "^2.0.5",
+    "framer-motion": "^11.0.24",
     "generate-password": "^1.7.1",
     "moment": "^2.30.1",
     "mongoose": "^8.2.2",

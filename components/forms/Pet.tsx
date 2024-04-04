@@ -71,7 +71,7 @@ const PetForm = ({
       }
     } else if (petParams) setshowForm(true);
     else setshowForm(false);
-  }, [petParams]);
+  }, [petParams, petinfo]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     let uploadURL: string = "";
@@ -106,6 +106,7 @@ const PetForm = ({
       gender: gender,
       color: formData.get("color")?.toString() || "",
       image: uploadURL,
+      hostname: hostname,
     };
 
     if (!petinfo) {
