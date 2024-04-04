@@ -165,7 +165,7 @@ export async function getPets(id: string) {
 export async function getPetInfo(id: string) {
   connectToDB();
   try {
-    const petInfo = await Pet.findOne({ id }).populate({
+    const petInfo = await Pet.findOne({ _id: id }).populate({
       path: "owner",
       model: User,
       select: "fullname address email contact image",
