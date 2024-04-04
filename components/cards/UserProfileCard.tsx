@@ -28,7 +28,7 @@ const UserProfileCard = async ({
       {edit && (
         <div className="absolute top-5 right-5">
           <RouteButton
-            route={"editProfile=true"}
+            route={"editProfile"}
             icon={<FaPenToSquare size={30} color="#c46316" />}
           />
         </div>

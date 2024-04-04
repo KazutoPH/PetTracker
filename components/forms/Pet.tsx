@@ -12,6 +12,7 @@ import { useUploadThing } from "@/lib/uploadthing";
 import LoadingSpiner from "../LoadingSpiner";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FaX } from "react-icons/fa6";
+import { useContextProvider } from "@/context/ContextProvider";
 
 const PetForm = ({
   petinfo,
@@ -42,11 +43,9 @@ const PetForm = ({
   const router = useRouter();
   const searchParams = useSearchParams();
   const petParams = searchParams.get(route);
-  const params = new URLSearchParams(searchParams);
-  const pathname = usePathname();
-  const { replace } = useRouter();
   const [hostname, setHostname] = useState("");
   const initialImage = petinfo ? petinfo.image : "";
+  const { modal, setModal, modalId, setModalId } = useContextProvider()
 
   const formatDate = (date: any) => {
     const year = date.getFullYear();
@@ -63,15 +62,15 @@ const PetForm = ({
     const currentHostname = window.location.hostname;
     setHostname(currentHostname);
 
-    if (petParams && petinfo) {
-      if (petinfo._id === petParams) {
+    if (modal === 'editPet' && petinfo) {
+      if (petinfo._id === modalId) {
         setGender(petinfo.gender);
         setshowForm(true);
         setShowImage(petinfo.image);
       }
-    } else if (petParams) setshowForm(true);
+    } else if (modal === 'addPet') setshowForm(true);
     else setshowForm(false);
-  }, [petParams, petinfo]);
+  }, [modal, petinfo]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     let uploadURL: string = "";
@@ -111,16 +110,18 @@ const PetForm = ({
     if (!petinfo) {
       const res = await createPet({ petDetails });
       setisLoading(false);
+      setModal('')
+      router.refresh();
 
-      router.push("/profile");
     } else {
       const res = await updatePetInfo({
         petDetails: petDetails,
-        petParams: petParams,
+        petParams: modalId,
       });
+      console.log(res)
       setisLoading(false);
-
-      router.push("/profile");
+      setModal('')
+      router.refresh();
     }
   };
 
@@ -156,10 +157,6 @@ const PetForm = ({
     }
   };
 
-  function removeParams() {
-    params.delete(route);
-    replace(`${pathname}`, { scroll: false });
-  }
 
   return (
     <>
@@ -170,7 +167,10 @@ const PetForm = ({
               <FaX
                 className="absolute top-5 right-5 hover:cursor-pointer"
                 size={30}
-                onClick={() => removeParams()}
+                onClick={() => {
+                  setModal('')
+                  setModalId('')
+                }}
               />
             )}
             <div className=" w-full">
@@ -204,9 +204,8 @@ const PetForm = ({
                           }}
                           className="btnStyle w-full"
                         >
-                          {`${
-                            showImage !== "" ? "Remove Image" : "Upload Image"
-                          }`}
+                          {`${showImage !== "" ? "Remove Image" : "Upload Image"
+                            }`}
                         </button>
                         <input
                           name="uploadImage"
@@ -309,9 +308,8 @@ const PetForm = ({
                   <div className="w-full mt-5">
                     <button
                       disabled={isLoading}
-                      className={`btnStyle w-full ${
-                        isLoading && "!bg-primary/50"
-                      }`}
+                      className={`btnStyle w-full ${isLoading && "!bg-primary/50"
+                        }`}
                       type="submit"
                     >
                       {isLoading ? <LoadingSpiner size={28} /> : btnTitle}

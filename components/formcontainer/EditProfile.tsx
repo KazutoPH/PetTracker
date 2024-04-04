@@ -1,26 +1,17 @@
 "use client";
 
 import { UserType } from "@/types";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Onboarding from "../forms/Onboarding";
+import { useContextProvider } from "@/context/ContextProvider";
 
 function EditProfile({ user }: { user: UserType }) {
-  const [showForm, setshowForm] = useState(false);
   const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const params = new URLSearchParams(searchParams);
-  const editProfileParams = searchParams.get("editProfile");
-
-  useEffect(() => {
-    if (editProfileParams) setshowForm(true);
-    else setshowForm(false);
-  }, [editProfileParams]);
+  const { modal, setModal } = useContextProvider()
 
   return (
     <>
-      {showForm && (
+      {modal === 'editProfile' && (
         <div className="darkbg padding-container">
           <Onboarding
             user={user}

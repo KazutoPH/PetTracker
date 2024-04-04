@@ -1,28 +1,24 @@
 "use client";
 
 import React from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useContextProvider } from "@/context/ContextProvider";
 
 interface ButtonProps {
   route: string;
   icon: any;
-  customFunction?: () => void;
+  modalId?: string
 }
 
-function RouteButton({ route, icon, customFunction }: ButtonProps) {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const params = new URLSearchParams(searchParams);
-  const addPetParams = searchParams.get("addPet");
-  const { replace } = useRouter();
+function RouteButton({ route, icon, modalId }: ButtonProps) {
+  const { modal, setModal, setModalId } = useContextProvider()
 
   return (
     <button
+      type="button"
       onClick={() => {
-        replace(`${pathname}?${route}`);
-        {
-          customFunction && customFunction;
-        }
+        setModal(route)
+        console.log(modal)
+        { modalId && setModalId(modalId) }
       }}
     >
       {icon}

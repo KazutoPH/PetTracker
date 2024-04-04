@@ -8,6 +8,7 @@ import { useUploadThing } from "@/lib/uploadthing";
 import LoadingSpiner from "../LoadingSpiner";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FaX } from "react-icons/fa6";
+import { useContextProvider } from "@/context/ContextProvider";
 
 const Onboarding = ({
   user,
@@ -28,11 +29,8 @@ const Onboarding = ({
   const { startUpload } = useUploadThing("media");
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
-  const pathname = usePathname();
-  const { replace } = useRouter();
   const initialImage = user.image ? user.image : "";
+  const { modal, setModal } = useContextProvider()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     let uploadURL: string = "";
@@ -71,7 +69,7 @@ const Onboarding = ({
     setisLoading(false);
 
     if (res.sucess) {
-      router.push("/profile");
+      setModal('')
       router.refresh();
     }
   };
@@ -109,10 +107,6 @@ const Onboarding = ({
     }
   };
 
-  function removeParams() {
-    params.delete("editProfile");
-    replace(`${pathname}`, { scroll: false });
-  }
 
   return (
     <div className="regiter_form_container relative">
@@ -120,7 +114,7 @@ const Onboarding = ({
         <FaX
           className="absolute top-5 right-5 hover:cursor-pointer"
           size={30}
-          onClick={() => removeParams()}
+          onClick={() => setModal('')}
         />
       )}
 
@@ -154,9 +148,8 @@ const Onboarding = ({
                       }
                     }}
                     disabled={isLoading}
-                    className={`btnStyle w-full ${
-                      isLoading && "!bg-primary/50"
-                    }`}
+                    className={`btnStyle w-full ${isLoading && "!bg-primary/50"
+                      }`}
                   >
                     {`${showImage !== "" ? "Remove Image" : "Upload Image"}`}
                   </button>

@@ -3,16 +3,13 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { useRouter, usePathname } from "next/navigation";
+import { useContextProvider } from "@/context/ContextProvider";
 
 function AddCard() {
-  const router = useRouter();
-  const pathname = usePathname();
+  const { setModal } = useContextProvider()
   return (
     <button
-      onClick={() =>
-        router.push(`${pathname}?addPet=true`, {
-          scroll: false,
-        })
+      onClick={() => setModal('addPet')
       }
       className="flex flex-col bg-white p-5 rounded-md w-full shadow-md items-center justify-center relative"
     >

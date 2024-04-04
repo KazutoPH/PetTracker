@@ -18,7 +18,6 @@ const PetCard = ({
   pet: PetType;
   edit: boolean;
 }) => {
-  const [selectPet, setselectPet] = useState("");
   var startDateObj = moment(pet.date_of_birth);
   var endDateObj = moment(new Date());
   var yearsdiff = endDateObj.diff(startDateObj, "year");
@@ -32,7 +31,8 @@ const PetCard = ({
         <div className="absolute top-5 right-5">
           {edit && (
             <RouteButton
-              route={`editPet=${pet._id}`}
+              route={`editPet`}
+              modalId={pet._id}
               icon={<FaPenToSquare size={30} color="#c46316" />}
             />
           )}
